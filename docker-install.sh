@@ -7,15 +7,16 @@ then
 distro="centos"
 elif [ -f /etc/os-release ]
 then
-    string=$(cat /etc/issue)
-    if [[ $string == *"Debian"* ]] || [[ $string == *"Raspbian"* ]]
-    then
-    distro="debian"
-    elif [[ $string == *"Ubuntu"* ]]
-    then
-    distro="ubuntu"
-    fi
+string=$(cat /etc/issue)
+if [[ $string == *"Debian"* ]] || [[ $string == *"Raspbian"* ]]
+then
+distro="debian"
+elif [[ $string == *"Ubuntu"* ]]
+then
+distro="ubuntu"
 fi
+fi
+
 echo "The distribution is "$distro
 
 if [[ $distro == "fedora" ]] || [[ $distro == "centos" ]]
@@ -35,18 +36,18 @@ echo "The package manager for "$distro" is " $package_manager
 if [[ $distro == "centos" ]] || [[ $distro == "fedora" ]]
 then
 sudo $package_manager remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-engine \
-                  podman \
-                  runc \
-                  docker-selinux \
-                  docker-engine-selinux \
-                  docker-engine
+    docker-client \
+    docker-client-latest \
+    docker-common \
+    docker-latest \
+    docker-latest-logrotate \
+    docker-logrotate \
+    docker-engine \
+    podman \
+    runc \
+    docker-selinux \
+    docker-engine-selinux \
+    docker-engine
 sudo $package_manager install -y dnf-plugins-core
 sudo $package_manager config-manager --add-repo https://download.docker.com/linux/$distro/docker-ce.repo
 sudo $package_manager install docker-ce docker-ce-cli containerd.io
