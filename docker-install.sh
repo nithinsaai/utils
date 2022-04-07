@@ -3,6 +3,8 @@
 DEBIAN="Debian"
 RASPBIAN="Raspbian"
 UBUNTU="Ubuntu"
+FEDORA="fedora"
+CENTOS="centos"
 
 if [ -f /etc/fedora-release ]
 then
@@ -13,13 +15,6 @@ DISTRO="centos"
 elif [ -f /etc/os-release ]
 then
     STRING=$(cat /etc/issue)
-    # if [[ "$STRING" == *"$DEBIAN"* ]] || [[ "$STRING" == *"$RASPBIAN"* ]]
-    # then
-    # DISTRO="debian"
-    # elif [[ "$STRING" == *"$UBUNTU"* ]]
-    # then
-    # DISTRO="ubuntu"
-    # fi
     case $STRING in
         *"$DEBIAN"*)
         DISTRO="debian"
@@ -35,7 +30,7 @@ fi
 
 echo "The distribution is $DISTRO"
 
-if [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ]
+if [[ "$DISTRO" == "$FEDORA" ]] || [[ "$DISTRO" == "$CENTOS" ]]
 then
     package_manager="dnf"
     # utils="dnf-plugins-core"
@@ -49,7 +44,7 @@ echo "The package manager for $DISTRO is $package_manager"
 # DISTRO= rhel/centos/fedora
 # package_manager= yum/dnf
 # utils= yum-utils/dnf-plugins-core
-if [[ "$DISTRO" == "centos" ]] || [[ "$DISTRO" == "fedora" ]]
+if [[ "$DISTRO" == "$CENTOS" ]] || [[ "$DISTRO" == "$FEDORA" ]]
 then
 sudo "$package_manager" remove docker \
     docker-client \
