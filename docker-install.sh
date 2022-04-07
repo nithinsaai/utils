@@ -13,13 +13,24 @@ DISTRO="centos"
 elif [ -f /etc/os-release ]
 then
     STRING=$(cat /etc/issue)
-    if [[ "$STRING" == *"$DEBIAN"* ]] || [[ "$STRING" == *"$RASPBIAN"* ]]
-    then
-    DISTRO="debian"
-    elif [[ "$STRING" == *"$UBUNTU"* ]]
-    then
-    DISTRO="ubuntu"
-    fi
+    # if [[ "$STRING" == *"$DEBIAN"* ]] || [[ "$STRING" == *"$RASPBIAN"* ]]
+    # then
+    # DISTRO="debian"
+    # elif [[ "$STRING" == *"$UBUNTU"* ]]
+    # then
+    # DISTRO="ubuntu"
+    # fi
+    case $STRING in
+        *"$DEBIAN"*)
+        DISTRO="debian"
+        ;;
+        *"$RASPBIAN"*)
+        DISTRO="debian"
+        ;;
+        *"$UBUNTU"*)
+        DISTRO="ubuntu"
+        ;;
+    esac
 fi
 
 echo "The distribution is $DISTRO"
