@@ -30,7 +30,7 @@ fi
 
 echo "The distribution is $DISTRO"
 
-if [[ "$DISTRO" == "$FEDORA" ]] || [[ "$DISTRO" == "$CENTOS" ]]
+if [ "$DISTRO" = "$FEDORA" ] || [ "$DISTRO" == "$CENTOS" ]
 then
     package_manager="dnf"
     # utils="dnf-plugins-core"
@@ -44,7 +44,7 @@ echo "The package manager for $DISTRO is $package_manager"
 # DISTRO= rhel/centos/fedora
 # package_manager= yum/dnf
 # utils= yum-utils/dnf-plugins-core
-if [[ "$DISTRO" == "$CENTOS" ]] || [[ "$DISTRO" == "$FEDORA" ]]
+if [ "$DISTRO" = "$CENTOS" ] || [ "$DISTRO" = "$FEDORA" ]
 then
 sudo "$package_manager" remove docker \
     docker-client \
