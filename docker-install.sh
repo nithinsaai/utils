@@ -1,26 +1,30 @@
 #!/bin/sh
 
+DEBIAN="Debian"
+RASPBIAN="Raspbian"
+UBUNTU="Ubuntu"
+
 if [ -f /etc/fedora-release ]
 then
-distro="fedora"
+DISTRO="fedora"
 elif [ -f /etc/centos-release ] || [ -f /etc/redhat-release ]
 then
-distro="centos"
+DISTRO="centos"
 elif [ -f /etc/os-release ]
 then
-    string=$(cat /etc/issue)
-    if [[ "$string" == *"Debian"* ]] || [[ "$string" == *"Raspbian"* ]]
+    STRING=$(cat /etc/issue)
+    if [[ "$STRING" == *"$DEBIAN"* ]] || [[ "$STRING" == *"$RASPBIAN"* ]]
     then
-    distro="debian"
-    elif [[ "$string" == *"Ubuntu"* ]]
+    DISTRO="debian"
+    elif [[ "$STRING" == *"$UBUNTU"* ]]
     then
-    distro="ubuntu"
+    DISTRO="ubuntu"
     fi
 fi
 
-echo "The distribution is $distro"
+echo "The distribution is $DISTRO"
 
-if [ "$distro" == "fedora" ] || [ "$distro" == "centos" ]
+if [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ]
 then
     package_manager="dnf"
     # utils="dnf-plugins-core"
@@ -28,13 +32,13 @@ then
 else
     package_manager="apt-get"
 fi
-echo "The package manager for $distro is $package_manager"
+echo "The package manager for $DISTRO is $package_manager"
 
 # .rpm
-# distro= rhel/centos/fedora
+# DISTRO= rhel/centos/fedora
 # package_manager= yum/dnf
 # utils= yum-utils/dnf-plugins-core
-if [[ "$distro" == "centos" ]] || [[ "$distro" == "fedora" ]]
+if [[ "$DISTRO" == "centos" ]] || [[ "$DISTRO" == "fedora" ]]
 then
 sudo "$package_manager" remove docker \
     docker-client \
@@ -50,13 +54,13 @@ sudo "$package_manager" remove docker \
     docker-engine-selinux \
     docker-engine
 sudo "$package_manager" install -y dnf-plugins-core
-sudo "$package_manager" config-manager --add-repo https://download.docker.com/linux/"$distro"/docker-ce.repo
+sudo "$package_manager" config-manager --add-repo https://download.docker.com/linux/"$DISTRO"/docker-ce.repo
 sudo "$package_manager" install docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker
 sudo docker run hello-world
 
 #.deb
-# distro= debian/raspbian/ubuntu
+# DISTRO= debian/raspbian/ubuntu
 else
 sudo apt-get remove docker docker-engine docker.io containerd runc -y
 sudo apt-get update
@@ -65,9 +69,9 @@ sudo apt-get install \
     curl \
     gnupg \
     lsb-release -y
-curl -fsSL https://download.docker.com/linux/"$distro"/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/"$DISTRO"/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$distro \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$DISTRO \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update -y
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
